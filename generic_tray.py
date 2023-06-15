@@ -1,4 +1,4 @@
-#! /usr/bin/python
+#!/usr/bin/python3
 
 helpTxt="""
 ALL UNITS ARE MILLIMETERS
@@ -61,9 +61,9 @@ try:
    # The *Adj values presumably have to do with filament width and shells
    from caldata import xScale,yScale,zScale, xiAdj,yiAdj,zAdj, xoAdj,yoAdj
 except:
-   print '*'*80
-   print '***NO CALIBRATION DATA FOUND.  ASSUMING PERFECT CALIBRATION'
-   print '*'*80
+   print('*'*80)
+   print('***NO CALIBRATION DATA FOUND.  ASSUMING PERFECT CALIBRATION')
+   print('*'*80)
    xScale,yScale,zScale = 1.0, 1.0, 1.0 
    xiAdj, yiAdj, zAdj   = 0.0, 0.0, 0.0
    xoAdj, yoAdj         = 0.0, 0.0
@@ -237,8 +237,8 @@ if __name__=="__main__":
    
    
    if len(CLI_ARGS) < 2:
-      print '***ERROR: Must provide the bin sizes as two arrays'
-      print helpTxt
+      print('***ERROR: Must provide the bin sizes as two arrays')
+      print(helpTxt)
       exit(0)
    
    
@@ -263,10 +263,10 @@ if __name__=="__main__":
    
    
    if rdepth > depth-5:
-      print '***Warning:  round depth needs to be smaller or equal to bin depth'
-      ok = raw_input('Shorten round depth? [Y/n]: ')
+      print('***Warning:  round depth needs to be smaller or equal to bin depth')
+      ok = input('Shorten round depth? [Y/n]: ')
       if ok.lower().startswith('n'):
-         print 'Aborting...'
+         print('Aborting...')
          exit(1)
       else:
          rdepth = max(depth-5, 0)
@@ -276,18 +276,18 @@ if __name__=="__main__":
    xszStrs = [str(int(x)) for x in xsizes]
    yszStrs = [str(int(y)) for y in ysizes]
    
-   print 'Floor:  ', floor, 'mm'
-   print 'Wall:   ', wall, 'mm'
-   print 'Depth:  ', depth, 'mm'
-   print 'Round:  ', rdepth, 'mm'
-   print 'Widths: ', xsizes, 'mm'
-   print 'Heights:', ysizes, 'mm'
+   print('Floor:  ', floor, 'mm')
+   print('Wall:   ', wall, 'mm')
+   print('Depth:  ', depth, 'mm')
+   print('Round:  ', rdepth, 'mm')
+   print('Widths: ', xsizes, 'mm')
+   print('Heights:', ysizes, 'mm')
    
    # If you don't override fname, the scad file will automatically be named
    if not fname:
       fname = 'tray_%s_by_%s.scad' % ('x'.join(xszStrs), 'x'.join(yszStrs))
       
-   print 'Writing to OpenSCAD file:', fname
+   print('Writing to OpenSCAD file:', fname)
    
    # Now tell solid python to create the .scad file
    twid,thgt,trayObj = createTray(xsizes,ysizes, depth, rdepth, wall, floor)
@@ -299,8 +299,8 @@ if __name__=="__main__":
    # EVERYTHING BELOW THIS LINE IS SIMPLY FOR PRINTING ASCII DIAGRAMS
    # Print some useful info
    # xOff and yOff end in the upper-right corner... which is the tray size!
-   print 'Tray size is: %0.2fmm by %0.2fmm' % (twid, thgt)
-   print '              (%0.2fcm by  %0.2fcm)' % (twid/10, thgt/10)
+   print('Tray size is: %0.2fmm by %0.2fmm' % (twid, thgt))
+   print('              (%0.2fcm by  %0.2fcm)' % (twid/10, thgt/10))
    
 
    # The diagram will be approximately 72 chars wide by 48 chars tall
@@ -320,8 +320,8 @@ if __name__=="__main__":
    xchars = [getCharsWide(x) for x in xsizes]
    ychars = [getCharsHigh(y) for y in ysizes]
    
-   print ''
-   print ''
+   print('')
+   print('')
    
    
    wCharsTotal = sum(xchars) + len(xchars) + 1
@@ -365,16 +365,16 @@ if __name__=="__main__":
    sys.stdout.write('\n\n')
    
    
-   print 'Total Width  (with walls):  %3.1f mm   (%3.2f cm)' % (twid,  twid/10.0)
-   print 'Total Height (with walls):  %3.1f mm   (%3.2f cm)' % (thgt,  thgt/10.0)
-   print 'Total Depth  (with floor):  %3.1f mm   (%3.2f cm)' % (depth+floor, (depth+floor)/10.0)
-   print ''
+   print('Total Width  (with walls):  %3.1f mm   (%3.2f cm)' % (twid,  twid/10.0))
+   print('Total Height (with walls):  %3.1f mm   (%3.2f cm)' % (thgt,  thgt/10.0))
+   print('Total Depth  (with floor):  %3.1f mm   (%3.2f cm)' % (depth+floor, (depth+floor)/10.0))
+   print('')
    
 
-   ok = raw_input('Generate STL file? (this can take a few minutes) [N/y]: ')
+   ok = input('Generate STL file? (this can take a few minutes) [N/y]: ')
    if ok.lower().startswith('y'):
       stlname = fname+'.stl'
-      print 'Converting to STL file:', stlname,
+      print('Converting to STL file:', stlname,)
       proc = subprocess.Popen('openscad -o "%s" "%s"' % (stlname, fname), shell=True)
       while proc.poll()==None:
          time.sleep(0.1)
